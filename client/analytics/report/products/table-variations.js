@@ -27,13 +27,6 @@ export default class VariationsReportTable extends Component {
 		this.getRowsContent = this.getRowsContent.bind( this );
 	}
 
-	getVariationName( row ) {
-		const extendedInfo = get( row, 'extended_info', {} );
-		const attributes = get( extendedInfo, 'attributes', {} );
-
-		return extendedInfo.name + ' / ' + attributes.map( a => a.option ).join( ', ' );
-	}
-
 	getHeadersContent() {
 		return [
 			{
@@ -86,11 +79,12 @@ export default class VariationsReportTable extends Component {
 				items_sold,
 				gross_revenue,
 				orders_count,
-				stock_status = 'outofstock',
-				stock_quantity = '0',
+				stock_status,
+				stock_quantity,
+				low_stock_amount,
 				product_id,
 			} = row;
-			const name = this.getVariationName( row );
+			const name = get( row, 'extended_info.name', '' ).replace( ' - ', ' / ' );
 			const ordersLink = getNewPath( persistedQuery, 'orders', {
 				filter: 'advanced',
 				product_includes: query.products,
@@ -123,11 +117,14 @@ export default class VariationsReportTable extends Component {
 					value: orders_count,
 				},
 				{
-					display: (
-						<Link href={ editPostLink } type="wp-admin">
-							{ stockStatuses[ stock_status ] }
-						</Link>
-					),
+					display:
+						'instock' === stock_status && stock_quantity && stock_quantity <= low_stock_amount ? (
+							<Link href={ editPostLink } type="wp-admin">
+								{ __( 'low', 'wc-admin' ) }
+							</Link>
+						) : (
+							stockStatuses[ stock_status ]
+						),
 					value: stockStatuses[ stock_status ],
 				},
 				{

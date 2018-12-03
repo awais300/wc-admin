@@ -97,8 +97,9 @@ export default class ProductsReportTable extends Component {
 				orders_count,
 				categories = [], // @TODO
 				variations = [], // @TODO
-				stock_status = 'outofstock', // @TODO
-				stock_quantity = '0', // @TODO
+				stock_status,
+				stock_quantity,
+				low_stock_amount,
 			} = row;
 			const { name } = extended_info;
 			const ordersLink = getNewPath( persistedQuery, 'orders', {
@@ -150,11 +151,14 @@ export default class ProductsReportTable extends Component {
 					value: variations.length,
 				},
 				{
-					display: (
-						<Link href={ 'post.php?action=edit&post=' + product_id } type="wp-admin">
-							{ stockStatuses[ stock_status ] }
-						</Link>
-					),
+					display:
+						'instock' === stock_status && stock_quantity && stock_quantity <= low_stock_amount ? (
+							<Link href={ 'post.php?action=edit&post=' + product_id } type="wp-admin">
+								{ __( 'low', 'wc-admin' ) }
+							</Link>
+						) : (
+							stockStatuses[ stock_status ]
+						),
 					value: stockStatuses[ stock_status ],
 				},
 				{
