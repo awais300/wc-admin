@@ -191,6 +191,14 @@ class WC_Admin_REST_Reports_Categories_Controller extends WC_REST_Reports_Contro
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
+				'extended_info' => array(
+					'name'       => array(
+						'type'        => 'string',
+						'readonly'    => true,
+						'context'     => array( 'view', 'edit' ),
+						'description' => __( 'Product name.', 'wc-admin' ),
+					),
+				),
 			),
 		);
 

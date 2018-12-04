@@ -60,18 +60,6 @@ class WC_Admin_Reports_Categories_Data_Store extends WC_Admin_Reports_Data_Store
 	);
 
 	/**
-	 * Extended product attributes to include in the data.
-	 *
-	 * @var array
-	 */
-	protected $extended_attributes = array(
-	// 'name',
-	// 'price',
-	// 'image',
-	// 'permalink',
-	);
-
-	/**
 	 * Return the database query with parameters used for Categories report: time span and order status.
 	 *
 	 * @param array $query_args Query arguments supplied by the user.
