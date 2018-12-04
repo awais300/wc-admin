@@ -6,7 +6,6 @@ import { __ } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { map } from 'lodash';
-import { withSelect } from '@wordpress/data';
 import PropTypes from 'prop-types';
 
 /**
@@ -23,6 +22,7 @@ import { SummaryList, SummaryListPlaceholder, SummaryNumber } from '@woocommerce
 import { getSummaryNumbers } from 'store/reports/utils';
 import { numberFormat } from 'lib/number';
 import ReportError from 'analytics/components/report-error';
+import withSelect from 'wc-api/with-select';
 
 class ReportSummary extends Component {
 	render() {
