@@ -183,7 +183,11 @@ class WC_Tests_Reports_Products extends WC_Unit_Test_Case {
 		$product = new WC_Product_Simple();
 		$product->set_name( 'Test Product' );
 		$product->set_regular_price( 25 );
+		$product->set_manage_stock( true );
+		$product->set_stock_quantity( 25 );
+		$product->set_low_stock_amount( 5 );
 		$product->save();
+
 		$order = WC_Helper_Order::create_order( 1, $product );
 		$order->set_status( 'completed' );
 		$order->set_shipping_total( 10 );
@@ -218,6 +222,9 @@ class WC_Tests_Reports_Products extends WC_Unit_Test_Case {
 						'image'     => $product->get_image(),
 						'permalink' => $product->get_permalink(),
 						'price'     => (float) $product->get_price(),
+						'stock_status' => $product->get_stock_status(),
+						'stock_quantity' => $product->get_stock_quantity() - 4, // subtract the ones purchased
+						'low_stock_amount' => $product->get_low_stock_amount(),
 					),
 				),
 			),
