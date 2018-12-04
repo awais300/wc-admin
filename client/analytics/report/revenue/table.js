@@ -6,7 +6,6 @@ import { __ } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
 import { format as formatDate } from '@wordpress/date';
 import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
 import { get, map } from 'lodash';
 
 /**
@@ -28,6 +27,7 @@ import { onQueryChange } from '@woocommerce/navigation';
 import ReportError from 'analytics/components/report-error';
 import { QUERY_DEFAULTS } from 'store/constants';
 import { numberFormat } from 'lib/number';
+import withSelect from 'wc-api/with-select';
 
 class RevenueReportTable extends Component {
 	getHeadersContent() {
@@ -196,7 +196,7 @@ export default compose(
 	withSelect( ( select, props ) => {
 		const { query } = props;
 		const datesFromQuery = getCurrentDates( query );
-		const { getReportStats, isReportStatsRequesting, isReportStatsError } = select( 'wc-admin' );
+		const { getReportStats, isReportStatsRequesting, isReportStatsError } = select( 'wc-api' );
 
 		// TODO Support hour here when viewing a single day
 		const tableQuery = {
