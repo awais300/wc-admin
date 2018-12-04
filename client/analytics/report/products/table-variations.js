@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
-import { __, _n } from '@wordpress/i18n';
+import { __, _n, _x } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
 import { map, get } from 'lodash';
 
@@ -113,7 +113,7 @@ export default class VariationsReportTable extends Component {
 					display:
 						'instock' === stock_status && stock_quantity && stock_quantity <= low_stock_amount ? (
 							<Link href={ editPostLink } type="wp-admin">
-								{ __( 'low', 'wc-admin' ) }
+								{ _x( 'Low', 'Indication of a low quantity', 'wc-admin' ) }
 							</Link>
 						) : (
 							stockStatuses[ stock_status ]
