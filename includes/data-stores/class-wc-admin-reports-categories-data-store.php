@@ -60,6 +60,18 @@ class WC_Admin_Reports_Categories_Data_Store extends WC_Admin_Reports_Data_Store
 	);
 
 	/**
+	 * Extended product attributes to include in the data.
+	 *
+	 * @var array
+	 */
+	protected $extended_attributes = array(
+	// 'name',
+	// 'price',
+	// 'image',
+	// 'permalink',
+	);
+
+	/**
 	 * Return the database query with parameters used for Categories report: time span and order status.
 	 *
 	 * @param array $query_args Query arguments supplied by the user.
@@ -149,6 +161,22 @@ class WC_Admin_Reports_Categories_Data_Store extends WC_Admin_Reports_Data_Store
 	}
 
 	/**
+	 * Enriches the category data with attributes specified by the extended_attributes.
+	 *
+	 * @param array $categories_data Categories data.
+	 * @param array $query_args  Query parameters.
+	 */
+	protected function include_extended_info( &$categories_data, $query_args ) {
+		foreach ( $categories_data as $key => $category_data ) {
+			$extended_info = new ArrayObject();
+			if ( $query_args['extended_info'] ) {
+				$extended_info['name'] = get_the_category_by_ID( $category_data['category_id'] );
+			}
+			$categories_data[ $key ]['extended_info'] = $extended_info;
+		}
+	}
+
+	/**
 	 * Returns the report data based on parameters supplied by the user.
 	 *
 	 * @param array $query_args  Query parameters.
@@ -163,16 +191,17 @@ class WC_Admin_Reports_Categories_Data_Store extends WC_Admin_Reports_Data_Store
 
 		// These defaults are only partially applied when used via REST API, as that has its own defaults.
 		$defaults = array(
-			'per_page'     => get_option( 'posts_per_page' ),
-			'page'         => 1,
-			'order'        => 'DESC',
-			'orderby'      => 'date',
-			'before'       => date( WC_Admin_Reports_Interval::$iso_datetime_format, $now ),
-			'after'        => date( WC_Admin_Reports_Interval::$iso_datetime_format, $week_back ),
-			'fields'       => '*',
-			'categories'   => array(),
+			'per_page'      => get_option( 'posts_per_page' ),
+			'page'          => 1,
+			'order'         => 'DESC',
+			'orderby'       => 'date',
+			'before'        => date( WC_Admin_Reports_Interval::$iso_datetime_format, $now ),
+			'after'         => date( WC_Admin_Reports_Interval::$iso_datetime_format, $week_back ),
+			'fields'        => '*',
+			'categories'    => array(),
+			'extended_info' => false,
 			// This is not a parameter for products reports per se, but maybe we should restricts order statuses here, too?
-			'order_status' => parent::get_report_order_statuses(),
+			'order_status'  => parent::get_report_order_statuses(),
 
 		);
 		$query_args = wp_parse_args( $query_args, $defaults );
@@ -245,6 +274,8 @@ class WC_Admin_Reports_Categories_Data_Store extends WC_Admin_Reports_Data_Store
 
 			$this->sort_records( $categories_data, $query_args['orderby'], $query_args['order'] );
 			$categories_data = $this->page_records( $categories_data, $query_args['page'], $query_args['per_page'] );
+
+			$this->include_extended_info( $categories_data, $query_args );
 
 			$categories_data = array_map( array( $this, 'cast_numbers' ), $categories_data );
 			$data            = (object) array(
