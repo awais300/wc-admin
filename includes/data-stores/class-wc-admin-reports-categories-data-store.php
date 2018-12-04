@@ -149,7 +149,7 @@ class WC_Admin_Reports_Categories_Data_Store extends WC_Admin_Reports_Data_Store
 	}
 
 	/**
-	 * Enriches the category data with attributes specified by the extended_attributes.
+	 * Enriches the category data.
 	 *
 	 * @param array $categories_data Categories data.
 	 * @param array $query_args  Query parameters.
