@@ -97,11 +97,8 @@ export default class ProductsReportTable extends Component {
 				orders_count,
 				categories = [], // @TODO
 				variations = [], // @TODO
-				stock_status,
-				stock_quantity,
-				low_stock_amount,
 			} = row;
-			const { name } = extended_info;
+			const { name, stock_status, stock_quantity, low_stock_amount } = extended_info;
 			const ordersLink = getNewPath( persistedQuery, 'orders', {
 				filter: 'advanced',
 				product_includes: product_id,
