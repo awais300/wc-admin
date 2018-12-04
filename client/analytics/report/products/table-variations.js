@@ -75,15 +75,8 @@ export default class VariationsReportTable extends Component {
 		const persistedQuery = getPersistedQuery( query );
 
 		return map( data, row => {
-			const {
-				items_sold,
-				gross_revenue,
-				orders_count,
-				stock_status,
-				stock_quantity,
-				low_stock_amount,
-				product_id,
-			} = row;
+			const { items_sold, gross_revenue, orders_count, extended_info, product_id } = row;
+			const { stock_status, stock_quantity, low_stock_amount } = extended_info;
 			const name = get( row, 'extended_info.name', '' ).replace( ' - ', ' / ' );
 			const ordersLink = getNewPath( persistedQuery, 'orders', {
 				filter: 'advanced',
