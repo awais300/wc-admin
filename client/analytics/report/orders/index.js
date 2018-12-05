@@ -22,10 +22,6 @@ import ReportSummary from 'analytics/components/report-summary';
 export default class OrdersReport extends Component {
 	render() {
 		const { path, query } = this.props;
-		console.log( charts );
-		console.log( path );
-		console.log( query );
-		console.log( getSelectedChart( query.chart, charts ) );
 		return (
 			<Fragment>
 				<ReportFilters
